@@ -51,54 +51,41 @@ export class LeaderboardService {
         });
       });
 
-      // Get user details for all users in the leaderboard
-      const userIds = Array.from(userStats.keys());
-      const { data: users, error: usersError } = await supabase.auth.admin.listUsers();
+      // Get current user details
+      const currentUser = await AuthService.getCurrentUser();
       
-      if (usersError) {
-        // Fallback: try to get current user info if admin access fails
-        const currentUser = await AuthService.getCurrentUser();
-        if (!currentUser || !userStats.has(currentUser.id)) {
-          return [];
-        }
-        
-        const stats = userStats.get(currentUser.id)!;
-        const avgScore = stats.total_score / stats.total_tests;
-        const finalScore = this.calculateFinalScore(avgScore, stats.total_tests, stats.total_questions);
-        
-        return [{
-          user_id: currentUser.id,
-          name: currentUser.name || 'User',
-          email: currentUser.email,
-          avatar_url: currentUser.avatar_url,
-          total_tests: stats.total_tests,
-          avg_score: avgScore,
-          total_questions: stats.total_questions,
-          final_score: finalScore
-        }];
-      }
-
       // Create leaderboard entries
       const leaderboardEntries: LeaderboardEntry[] = [];
 
-      userIds.forEach(userId => {
-        const user = users.users.find(u => u.id === userId);
-        if (!user) return;
-
-        const stats = userStats.get(userId)!;
+      userStats.forEach((stats, userId) => {
         const avgScore = stats.total_score / stats.total_tests;
         const finalScore = this.calculateFinalScore(avgScore, stats.total_tests, stats.total_questions);
 
-        leaderboardEntries.push({
-          user_id: userId,
-          name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
-          email: user.email || '',
-          avatar_url: user.user_metadata?.avatar_url,
-          total_tests: stats.total_tests,
-          avg_score: avgScore,
-          total_questions: stats.total_questions,
-          final_score: finalScore
-        });
+        // If this is the current user, use their actual details
+        if (currentUser && userId === currentUser.id) {
+          leaderboardEntries.push({
+            user_id: userId,
+            name: currentUser.name || currentUser.email?.split('@')[0] || 'You',
+            email: currentUser.email || '',
+            avatar_url: currentUser.avatar_url,
+            total_tests: stats.total_tests,
+            avg_score: avgScore,
+            total_questions: stats.total_questions,
+            final_score: finalScore
+          });
+        } else {
+          // For other users, use anonymous data for privacy
+          leaderboardEntries.push({
+            user_id: userId,
+            name: `User ${userId.slice(-4)}`, // Use last 4 chars of user ID for uniqueness
+            email: '', // Don't expose other users' emails
+            avatar_url: undefined,
+            total_tests: stats.total_tests,
+            avg_score: avgScore,
+            total_questions: stats.total_questions,
+            final_score: finalScore
+          });
+        }
       });
 
       // Sort by final score (descending)
