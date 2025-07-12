@@ -321,9 +321,9 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-center font-medium text-foreground">{entry.total_tests}</td>
+                      <td className="py-3 px-4 text-center font-medium text-foreground">{entry.tests_completed}</td>
                       <td className="py-3 px-4 text-center font-medium text-foreground">{entry.avg_score.toFixed(1)}%</td>
-                      <td className="py-3 px-4 text-center font-medium text-foreground">{entry.total_questions}</td>
+                      <td className="py-3 px-4 text-center font-medium text-foreground">{entry.total_questions_attempted}</td>
                       <td className="py-3 px-4 text-center">
                         <span className={`font-bold ${index < 3 ? 'text-primary' : 'text-foreground'}`}>
                           {entry.final_score.toFixed(1)}%
@@ -346,12 +346,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
             {/* How Rankings Are Calculated */}
             <div className="mt-8 p-4 bg-secondary rounded-lg">
               <h3 className="font-semibold text-foreground mb-2">How Rankings Are Calculated</h3>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Average Score: 50% weight</li>
-                <li>• Tests Completed: 30% weight</li>
-                <li>• Questions Attempted: 20% weight</li>
-                <li className="italic">All factors are normalized and combined to create the final score.</li>
-              </ul>
+              <p className="text-sm text-muted-foreground">
+                Rankings are calculated using a comprehensive scoring system that considers your average test performance, 
+                number of tests completed, and total questions attempted. The final score is normalized to provide 
+                fair rankings across all users.
+              </p>
             </div>
           </div>
         </div>
