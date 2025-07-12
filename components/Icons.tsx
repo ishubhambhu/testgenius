@@ -206,3 +206,32 @@ export const LogOutIcon: React.FC<{ className?: string }> = ({ className }) => (
     <line x1="21" x2="9" y1="12" y2="12" />
   </svg>
 );
+
+export const TrophyIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+    <path d="M4 22h16" />
+    <path d="M10 14.66V17c0 .55.47.98.97 1.21C12.04 18.75 13 20.24 13 22" />
+    <path d="M14 14.66V17c0 .55-.47.98-.97 1.21C11.96 18.75 11 20.24 11 22" />
+    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+  </svg>
+);
+
+export const CrownIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11.562 3.266a.5.5 0 0 1 .876 0L14.5 8.5l4.5-1.5a.5.5 0 0 1 .65.65L18 12.5l3.5 4.5a.5.5 0 0 1-.65.65L16 16l-3.5 4.5a.5.5 0 0 1-.876 0L8 15.5l-4.85 1.65a.5.5 0 0 1-.65-.65L6 12.5 2.5 7.65a.5.5 0 0 1 .65-.65L8 8.5l2.062-5.234Z" />
+  </svg>
+);
+
+export const MedalIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.61 2.14a2 2 0 0 1 .13 2.2L16.79 15" />
+    <path d="M11 12 5.12 2.2" />
+    <path d="m13 12 5.88-9.8" />
+    <path d="M8 7h8" />
+    <circle cx="12" cy="17" r="5" />
+    <path d="m9 22 3-3 3 3" />
+    <path d="M9 12h6" />
+  </svg>
+);

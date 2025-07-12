@@ -1,6 +1,6 @@
 import React from 'react';
 import { APP_NAME } from '../constants';
-import { SunIcon, MoonIcon, MortarBoardIcon } from './Icons';
+import { SunIcon, MoonIcon, MortarBoardIcon, TrophyIcon } from './Icons';
 import Button from './Button';
 import { UserMenu } from './UserMenu';
 import { AuthUser } from '../services/authService';
@@ -9,6 +9,7 @@ interface HeaderProps {
   darkMode: boolean;
   toggleDarkMode: (event: React.MouseEvent) => void;
   onNavigateToProfile: () => void;
+  onNavigateToLeaderboard: () => void;
   onNavigateHome: () => void;
   user: AuthUser | null;
 }
@@ -17,6 +18,7 @@ const Header: React.FC<HeaderProps> = ({
   darkMode, 
   toggleDarkMode, 
   onNavigateToProfile, 
+  onNavigateToLeaderboard,
   onNavigateHome, 
   user
 }) => {
@@ -34,6 +36,15 @@ const Header: React.FC<HeaderProps> = ({
           </h1>
         </button>
         <div className="flex items-center space-x-1">
+          <Button
+            onClick={onNavigateToLeaderboard}
+            variant="ghost"
+            size="icon"
+            aria-label="View Leaderboard"
+            title="View Leaderboard"
+          >
+            <TrophyIcon className="h-5 w-5" />
+          </Button>
           <Button
             onClick={(e) => toggleDarkMode(e)}
             variant="ghost"

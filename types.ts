@@ -54,6 +54,7 @@ export enum TestPhase {
   COMPLETED = 'completed',
   REVIEW = 'review',
   HISTORY = 'history', // New phase for viewing test history
+  LEADERBOARD = 'leaderboard', // New phase for viewing leaderboard
   VIEW_HISTORY_DETAILS = 'view_history_details',
 }
 

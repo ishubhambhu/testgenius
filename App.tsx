@@ -7,6 +7,7 @@ import TestInterface from './components/TestInterface';
 import ResultsView from './components/ResultsView';
 import ReviewView from './components/ReviewView';
 import { ProfileView } from './components/ProfileView';
+import { LeaderboardView } from './components/LeaderboardView';
 import { ResumeTestBanner } from './components/ResumeTestBanner';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { Question, TestInputMethod, TimeSettings, TestPhase, QuestionStatus, LanguageOption, NegativeMarkingSettings, PendingTestConfig, TestHistoryEntry, InProgressTestState, DocumentWithViewTransitions } from './types';
@@ -550,6 +551,12 @@ export function App() {
     setTestPhase(TestPhase.HISTORY);
   };
 
+  const handleNavigateToLeaderboard = () => {
+    setError(null);
+    setIsRetakeMode(false);
+    setTestPhase(TestPhase.LEADERBOARD);
+  };
+
   const handleRetakeTestFromHistory = (entry: TestHistoryEntry) => {
     // Calculate new name for the retake
     const baseName = entry.testName.split(' - Retake ')[0];
@@ -789,6 +796,11 @@ export function App() {
                   onClearHistory={handleClearHistory}
                   onBackToHome={handleStartNewTest}
                 />;
+      case TestPhase.LEADERBOARD:
+        return <LeaderboardView
+                  user={user}
+                  onBackToHome={handleStartNewTest}
+                />;
       case TestPhase.VIEW_HISTORY_DETAILS:
         if (!viewingHistoryEntry) {
             setError("Could not find the test history details to display.");
@@ -816,6 +828,7 @@ export function App() {
               darkMode={darkMode} 
               toggleDarkMode={toggleDarkMode} 
               onNavigateToProfile={handleNavigateToProfile} 
+              onNavigateToLeaderboard={handleNavigateToLeaderboard}
               onNavigateHome={handleNavigateHome}
               user={user}
             />
