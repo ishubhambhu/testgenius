@@ -2,13 +2,16 @@ import { supabase } from './supabaseClient';
 
 export interface LeaderboardEntry {
   user_id: string;
-  name: string;
+  display_name: string;
   email: string;
   avatar_url?: string;
   tests_completed: number;
   avg_score: number;
   total_questions_attempted: number;
   last_test_date: string;
+  normalized_tests: number;
+  normalized_score: number;
+  normalized_questions: number;
   final_score: number;
 }
 
@@ -33,13 +36,16 @@ export class LeaderboardService {
       // Transform the data to match our interface
       return data.map(row => ({
         user_id: row.user_id,
-        name: row.display_name || row.email?.split('@')[0] || 'Unknown User',
+        display_name: row.display_name || row.email?.split('@')[0] || 'Unknown User',
         email: row.email || '',
         avatar_url: row.avatar_url,
         tests_completed: Number(row.tests_completed) || 0,
         avg_score: Number(row.avg_score) || 0,
         total_questions_attempted: Number(row.total_questions_attempted) || 0,
         last_test_date: row.last_test_date || '',
+        normalized_tests: Number(row.normalized_tests) || 0,
+        normalized_score: Number(row.normalized_score) || 0,
+        normalized_questions: Number(row.normalized_questions) || 0,
         final_score: Number(row.final_score) || 0
       }));
 

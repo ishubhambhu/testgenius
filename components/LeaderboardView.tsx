@@ -195,13 +195,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
                               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                                 <rect width="48" height="48" fill="#9CA3AF" rx="24"/>
                                 <text x="24" y="30" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">
-                                  ${getInitials(topThree[1].name)}
+                                  ${getInitials(topThree[1].display_name)}
                                 </text>
                               </svg>
                             `)}`;
                           }}
                         />
-                        <p className="text-sm font-medium text-center mt-1">{topThree[1].name}</p>
+                        <p className="text-sm font-medium text-center mt-1">{topThree[1].display_name}</p>
                         <p className="text-xs text-muted-foreground text-center">{topThree[1].final_score.toFixed(1)}%</p>
                       </div>
                       <div className={`${getPodiumHeight(2)} ${getPodiumColor(2)} w-20 rounded-t-lg flex items-center justify-center`}>
@@ -224,13 +224,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
                               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
                                 <rect width="64" height="64" fill="#FCD34D" rx="32"/>
                                 <text x="32" y="40" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="white">
-                                  ${getInitials(topThree[0].name)}
+                                  ${getInitials(topThree[0].display_name)}
                                 </text>
                               </svg>
                             `)}`;
                           }}
                         />
-                        <p className="text-sm font-medium text-center mt-1">{topThree[0].name}</p>
+                        <p className="text-sm font-medium text-center mt-1">{topThree[0].display_name}</p>
                         <p className="text-xs text-muted-foreground text-center">{topThree[0].final_score.toFixed(1)}%</p>
                       </div>
                       <div className={`${getPodiumHeight(1)} ${getPodiumColor(1)} w-24 rounded-t-lg flex items-center justify-center`}>
@@ -253,13 +253,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
                               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                                 <rect width="48" height="48" fill="#D97706" rx="24"/>
                                 <text x="24" y="30" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">
-                                  ${getInitials(topThree[2].name)}
+                                  ${getInitials(topThree[2].display_name)}
                                 </text>
                               </svg>
                             `)}`;
                           }}
                         />
-                        <p className="text-sm font-medium text-center mt-1">{topThree[2].name}</p>
+                        <p className="text-sm font-medium text-center mt-1">{topThree[2].display_name}</p>
                         <p className="text-xs text-muted-foreground text-center">{topThree[2].final_score.toFixed(1)}%</p>
                       </div>
                       <div className={`${getPodiumHeight(3)} ${getPodiumColor(3)} w-20 rounded-t-lg flex items-center justify-center`}>
@@ -299,7 +299,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
                         <div className="flex items-center space-x-3">
                           <img
                             src={entry.avatar_url || getGravatarUrl(entry.email)}
-                            alt={entry.name}
+                            alt={entry.display_name}
                             className="w-8 h-8 rounded-full"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -307,14 +307,14 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ user, onBackTo
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                                   <rect width="32" height="32" fill="hsl(var(--primary))" rx="16"/>
                                   <text x="16" y="20" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">
-                                    ${getInitials(entry.name)}
+                                    ${getInitials(entry.display_name)}
                                   </text>
                                 </svg>
                               `)}`;
                             }}
                           />
                           <div>
-                            <p className="font-medium text-foreground">{entry.name}</p>
+                            <p className="font-medium text-foreground">{entry.display_name}</p>
                             {user && entry.user_id === user.id && (
                               <p className="text-xs text-primary">You</p>
                             )}
