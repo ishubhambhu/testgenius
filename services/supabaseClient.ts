@@ -12,6 +12,32 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export type Database = {
   public: {
     Tables: {
+      user_profiles: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          avatar_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          name: string;
+          email: string;
+          avatar_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          email?: string;
+          avatar_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       user_test_history: {
         Row: {
           id: string;

@@ -1,5 +1,4 @@
 import { supabase } from './supabaseClient';
-import { AuthService } from './authService';
 
 export interface LeaderboardEntry {
   user_id: string;
@@ -15,8 +14,8 @@ export interface LeaderboardEntry {
 export class LeaderboardService {
   static async getLeaderboard(): Promise<LeaderboardEntry[]> {
     try {
-      // Get aggregated test data for all users
-      const { data, error } = await supabase
+      // Get aggregated test data with user profiles
+      const { data: testData, error: testError } = await supabase
         .from('user_test_history')
         .select(`
           user_id,
@@ -24,20 +23,37 @@ export class LeaderboardService {
           total_questions
         `);
 
-      if (error) throw error;
+      if (testError) throw testError;
 
-      if (!data || data.length === 0) {
+      if (!testData || testData.length === 0) {
         return [];
       }
 
-      // Group by user and calculate stats
+      // Get user profiles
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select(`
+          id,
+          name,
+          email,
+          avatar_url
+        `);
+
+      if (profileError) throw profileError;
+
+      // Create a map of user profiles for quick lookup
+      const profileMap = new Map(
+        (profileData || []).map(profile => [profile.id, profile])
+      );
+
+      // Group test data by user and calculate stats
       const userStats = new Map<string, {
         total_tests: number;
         total_score: number;
         total_questions: number;
       }>();
 
-      data.forEach(test => {
+      testData.forEach(test => {
         const existing = userStats.get(test.user_id) || {
           total_tests: 0,
           total_score: 0,
@@ -51,41 +67,26 @@ export class LeaderboardService {
         });
       });
 
-      // Get current user details
-      const currentUser = await AuthService.getCurrentUser();
-      
       // Create leaderboard entries
       const leaderboardEntries: LeaderboardEntry[] = [];
 
       userStats.forEach((stats, userId) => {
+        const profile = profileMap.get(userId);
+        if (!profile) return; // Skip if no profile found
+
         const avgScore = stats.total_score / stats.total_tests;
         const finalScore = this.calculateFinalScore(avgScore, stats.total_tests, stats.total_questions);
 
-        // If this is the current user, use their actual details
-        if (currentUser && userId === currentUser.id) {
-          leaderboardEntries.push({
-            user_id: userId,
-            name: currentUser.name || currentUser.email?.split('@')[0] || 'You',
-            email: currentUser.email || '',
-            avatar_url: currentUser.avatar_url,
-            total_tests: stats.total_tests,
-            avg_score: avgScore,
-            total_questions: stats.total_questions,
-            final_score: finalScore
-          });
-        } else {
-          // For other users, use anonymous data for privacy
-          leaderboardEntries.push({
-            user_id: userId,
-            name: `User ${userId.slice(-4)}`, // Use last 4 chars of user ID for uniqueness
-            email: '', // Don't expose other users' emails
-            avatar_url: undefined,
-            total_tests: stats.total_tests,
-            avg_score: avgScore,
-            total_questions: stats.total_questions,
-            final_score: finalScore
-          });
-        }
+        leaderboardEntries.push({
+          user_id: userId,
+          name: profile.name || profile.email?.split('@')[0] || 'Unknown User',
+          email: profile.email || '',
+          avatar_url: profile.avatar_url,
+          total_tests: stats.total_tests,
+          avg_score: avgScore,
+          total_questions: stats.total_questions,
+          final_score: finalScore
+        });
       });
 
       // Sort by final score (descending)

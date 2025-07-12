@@ -101,5 +101,17 @@ export class AuthService {
     });
 
     if (error) throw error;
+
+    // Also update the user_profiles table
+    const { error: profileError } = await supabase
+      .from('user_profiles')
+      .upsert({
+        id: (await this.getCurrentUser())?.id,
+        name: updates.name,
+        avatar_url: updates.avatar_url,
+        email: (await this.getCurrentUser())?.email,
+      });
+
+    if (profileError) throw profileError;
   }
 }
